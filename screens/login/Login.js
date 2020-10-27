@@ -2,15 +2,18 @@ import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { Text, View, TouchableHighlight, TextInput} from 'react-native';
 import styles from './../../styles/Styles';
-import firebaseSevice from './../../services/firebase'
+import firebaseSevice from './../../services/firebase';
+import { AuthContext } from './../../context/AuthContext';
 
 const Login = ({navigation}) => {
     const [user, setUser] = useState('');
     const [password, setPassword] = useState('');
-
+    const { signIn } = React.useContext(AuthContext);
+    
     const onPressLogin = async () => {
         try {
             await firebaseSevice.login(user,password)
+            signIn({ user, password })
             navigation.navigate('Main')
         } catch (error) {
             alert(error);
